@@ -83,10 +83,10 @@ function App() {
 
       break;
   }
-
+  let input = document.querySelector("#input");
   const searchPokemon = () => {
-    Axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`).then(
-      (response) => {
+    Axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+      .then((response) => {
         console.log(response);
         console.log(response.data.types[0].type.name);
         setPokemon({
@@ -99,8 +99,13 @@ function App() {
           type: response.data.types[0].type.name,
         });
         setPokemonChosen(true);
-      }
-    );
+      })
+      .catch((err) => {
+        console.log(err.message);
+        alert("Please enter a proper Name");
+        setPokemonName("");
+        input.value = "";
+      });
   };
   return (
     <div className="h-screen bg-[#EEEEEE]">
@@ -113,7 +118,7 @@ function App() {
               className="rounded-md outline-0 p-2"
               placeholder="Name of Pokemon..."
               name=""
-              id=""
+              id="input"
               onChange={(e) => {
                 setPokemonName(e.target.value.toLowerCase());
               }}
